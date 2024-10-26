@@ -1,0 +1,18 @@
+<div class="chat-container">
+  <!-- Секция для отображения сообщений -->
+  <div class="messages-container">
+    <div *ngFor="let msg of messages" class="message">
+      <strong>{{ msg.user }}</strong>: {{ msg.message }}
+    </div>
+  </div>
+
+  <!-- Поле ввода и кнопка для отправки сообщений -->
+  <div class="input-container">
+    <input
+      type="text"
+      [(ngModel)]="message"
+      placeholder="Введите сообщение..."
+      (keydown.enter)="sendMessage(message)" />
+    <button (click)="sendMessage(message)">Отправить</button>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: daphne -b 0.0.0.0 -p 8000 myproject.asgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - PYTHONPATH=/app/myproject
+    networks:
+      - webnet
+
+  angular:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    volumes:
+      - ./front:/usr/src/app
+    ports:
+      - "4200:4200"
+    command: npm start
+    networks:
+      - webnet
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - webnet
+
+networks:
+  webnet:
